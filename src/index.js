@@ -1,23 +1,35 @@
 const Url = function (urlString) {
   const properties = {
-    hash: "",
+    user: "ich",
+    password: "passwort",
+    protocol: "https:",
+    host: "assi.peter",
+    port: "",
     // host: "assi.peter", -- is hostname + port -- getter
-    hostname: "assi.peter",
     // href: "https://ich:passwort@assi.peter/", -- getter
     // origin: "https://assi.peter", -- is protocol + hostname + port
-    password: "passwort",
-    pathname: "/",
-    port: "",
-    protocol: "https:",
+    path: "/",
     // search: "",  -- stringifies search params -- getter
-    searchParams: URLSearchParams,
-    username: "ich",
+    query: URLSearchParams,
+    fragment: "",
   };
   const urlObject = new URL(urlString);
   this.__getProperty = function (property) {
     return urlObject[property];
   };
 };
+
+/*
+-- elm url type
+type alias Url =
+    { protocol : Protocol
+    , host : String
+    , port_ : Maybe Int
+    , path : String
+    , query : Maybe String
+    , fragment : Maybe String
+    }
+*/
 
 // Getters - we mimic the behaviour of the document.location object here
 // Note that some methods are aliased (such as getScheme and getProtocol)
