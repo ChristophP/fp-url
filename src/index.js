@@ -1,21 +1,26 @@
 const Url = function (urlString) {
+  const urlObject = new URL(urlString);
   const properties = {
-    user: "ich",
-    password: "passwort",
-    protocol: "https:",
-    host: "assi.peter",
-    port: "",
+    user: urlObject.username !== "" ? urlObject.username : null,
+    password: urlObject.password !== "" ? urlObject.password : null,
+    protocol: urlObject.protocol,
+    host: urlObject.hostname,
+    port: urlObject.port !== "" ? Number(urlObject.port) : null,
     // host: "assi.peter", -- is hostname + port -- getter
     // href: "https://ich:passwort@assi.peter/", -- getter
     // origin: "https://assi.peter", -- is protocol + hostname + port
-    path: "/",
+    path: urlObject.pathname,
     // search: "",  -- stringifies search params -- getter
-    query: URLSearchParams,
-    fragment: "",
+    query: urlObject.search !== "" ? urlObject.searchParams : null,
+    fragment: urlObject.hash !== "" ? urlObject.hash.slice(1) : null,
+
+    // store these for getters
+    href: urlObject.href,
+    hostWithPort: urlObject.host,
+    origin: urlObject.origin,
   };
-  const urlObject = new URL(urlString);
   this.__getProperty = function (property) {
-    return urlObject[property];
+    return properties[property];
   };
 };
 
@@ -31,51 +36,88 @@ type alias Url =
     }
 */
 
-// Getters - we mimic the behaviour of the document.location object here
-// Note that some methods are aliased (such as getScheme and getProtocol)
+const defaultPropDescriptor = {
+  enumerable: true,
+  writeable: false,
+};
+
 Object.defineProperties(Url.prototype, {
-  protocol: {
-    get() {
-      return this.__getProperty("protocol");
-    },
-    enumerable: true,
-  },
   user: {
+    ...defaultPropDescriptor,
     get() {
       return this.__getProperty("user");
     },
-    enumerable: true,
   },
   password: {
+    ...defaultPropDescriptor,
     get() {
       return this.__getProperty("password");
     },
-    enumerable: true,
   },
-  auth: {
+  protocol: {
+    ...defaultPropDescriptor,
     get() {
-      const auth = this.user;
-      const pw = this.password;
-      return pw ? `${auth}:${pw}` : auth;
+      return this.__getProperty("protocol");
     },
-    enumerable: true,
   },
-  hostname: {
+  host: {
+    ...defaultPropDescriptor,
     get() {
-      return this.__getProperty("hostname");
+      return this.__getProperty("host");
     },
-    enumerable: true,
+  },
+  port: {
+    ...defaultPropDescriptor,
+    get() {
+      return this.__getProperty("port");
+    },
+  },
+  path: {
+    ...defaultPropDescriptor,
+    get() {
+      return this.__getProperty("path");
+    },
+  },
+  query: {
+    ...defaultPropDescriptor,
+    get() {
+      return this.__getProperty("query");
+    },
+  },
+  fragment: {
+    ...defaultPropDescriptor,
+    get() {
+      return this.__getProperty("fragment");
+    },
+  },
+  // GETTERS
+  toString: {
+    value() {
+      return this.__getProperty("href");
+    },
+  },
+
+  getOrigin: {
+    value() {
+      return this.__getProperty("origin");
+    },
+  },
+  getHostWithPort: {
+    value() {
+      return this.__getProperty("hostWithPort");
+    },
+  },
+  getAuth: {
+    value() {
+      return `${this.user}:${this.password}`;
+    },
+  },
+  getUri: {
+    value() {
+      return `${this.path}?${this.query.toString()}#${this.fragment}`;
+    },
   },
 });
-Url.prototype.port = function () {
-  return this.__getProperty("port");
-};
-Url.prototype.pathname = function () {
-  return this.__getProperty("pathname");
-};
-Url.prototype.searc = function () {
-  return this.__getProperty("search");
-};
 
 Url.fromString = (urlString) =>
   // Use standard url library to parse string
