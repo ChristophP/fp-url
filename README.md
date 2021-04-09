@@ -11,7 +11,7 @@ This module builds on top of the core 'url' and 'querystring' modules.
 Nothing more than:
 
 ```sh
-npm install fp-url
+npm install --save fp-url
 ```
 
 ## Sample usage
@@ -19,7 +19,7 @@ npm install fp-url
 ## Features that nurl doesn't have
 - Setting the entire querystring
 - Support for nested url params
-- checking of a URL is valid
+- checking if a URL is valid
 
 URLs are modelled as:
 

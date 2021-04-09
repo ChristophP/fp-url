@@ -37,7 +37,7 @@ describe("Properties", () => {
       expect(url.password).toBeNull();
     });
     test("has the protocol property correctly set", () => {
-      expect(url.protocol).toBe("https:");
+      expect(url.protocol).toBe("https");
     });
     test("has the host property correctly set", () => {
       expect(url.host).toBe("ard.de");
@@ -67,7 +67,7 @@ describe("Properties", () => {
       expect(url.password).toBeNull();
     });
     test("has the protocol property correctly set", () => {
-      expect(url.protocol).toBe("https:");
+      expect(url.protocol).toBe("https");
     });
     test("has the host property correctly set", () => {
       expect(url.host).toBe("ard.de");
@@ -137,4 +137,46 @@ describe("Getters", () => {
   });
 });
 
-describe("Setters", () => {});
+describe("interrogation", () => {
+  test("hasQueryParam() checks if query params are set", () => {});
+  test("isValidUrl() returns true for valid urls", () => {});
+  test("equals() stringifies the url", () => {});
+  test("contains() stringifies the url", () => {});
+});
+
+describe("Setters", () => {
+  test("setProtocol() sets the protocol", () => {
+    const url = Url.fromString("http://unsafe.com");
+    expect(url.setProtocol("https")).toHaveProperty("protocol", "https");
+  });
+  test("setUser() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setAuth() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setHost() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setPath() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setQueryParam() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("removeQueryParam() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setQuery() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setQueryString() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setFragment() sets the protocol", () => {
+    expect(false).toBe(true);
+  });
+  test("setQueryParam() stringifies the url", () => {
+    expect(false).toBe(true);
+  });
+});

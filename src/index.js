@@ -1,9 +1,8 @@
-const Url = function (urlString) {
-  const urlObject = new URL(urlString);
+const Url = function (urlObject) {
   const properties = {
     user: urlObject.username !== "" ? urlObject.username : null,
     password: urlObject.password !== "" ? urlObject.password : null,
-    protocol: urlObject.protocol,
+    protocol: urlObject.protocol.slice(0, -1),
     host: urlObject.hostname,
     port: urlObject.port !== "" ? Number(urlObject.port) : null,
     // host: "assi.peter", -- is hostname + port -- getter
@@ -117,11 +116,21 @@ Object.defineProperties(Url.prototype, {
       return `${this.path}?${this.query.toString()}#${this.fragment}`;
     },
   },
+  // SETTERS
+  setProtocol: {
+    value(val) {
+      const urlObject = new URL(this.toString());
+      urlObject.protocol = val;
+      return new Url(urlObject);
+    },
+  },
 });
 
-Url.fromString = (urlString) =>
+Url.fromString = (urlString) => {
+  const urlObject = new URL(urlString);
   // Use standard url library to parse string
-  new Url(urlString);
+  return new Url(urlObject);
+};
 
 // Utility
 export default Url;
