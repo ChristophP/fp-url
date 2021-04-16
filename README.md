@@ -1,10 +1,18 @@
-# nURL - A simple URL object for node.js
+# FP URL - An immutable URL object for JavaScript
 
 This module provides a simple URL object that provides a clean, easy-to-use interface to
-accessing a URLs values as well as for creating and manipulating URLs.  Each URL object is
+accessing a URLs values as well as for creating and manipulating URLs. Each URL object is
 immutable: whenever a value is altered, a new instance is returned leaving the original unchanged.
 
 This module builds on top of the core 'url' and 'querystring' modules.
+
+## Why is this lib cool?
+
+- No manilulating URLs with Regexes, use this nicely parsed structured and stringify it back when needed
+- The URL object is immutable
+- Nice, chainable API
+- Take advantage of a bunch of cool getters and setters that you don't get with the
+  plain Js built-in `URL` constructor
 
 ## Installation
 
@@ -42,7 +50,7 @@ Note that:
 Setters follow a similar pattern, each returning a new URL object:
 
 ```js
-u.setProtocol('https'), u.setScheme('https')
+u.setProtocol('https')
 u.setAuth('user', 'secret')
 u.setHostname('example.com')
 u.setSubdomain(0, 'sample') // => 'sample.google.com'
@@ -54,12 +62,7 @@ u.setQueryParam('q', 'testing')
 u.setHash('top')
 ```
 
-URL objects can be merged to create a new object - the properties of the passed in
-URL will fill in any missing components:
-
 ## Testing
-
-All tests are written in the excellent [vows](http://vowsjs.org/) library.  To run them, use
 
 ```sh
 npm test
