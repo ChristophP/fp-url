@@ -124,6 +124,41 @@ Object.defineProperties(Url.prototype, {
       return new Url(urlObject);
     },
   },
+  setUser: {
+    value(val) {
+      const urlObject = new URL(this.toString());
+      urlObject.username = val;
+      return new Url(urlObject);
+    },
+  },
+  setPassword: {
+    value(val) {
+      const urlObject = new URL(this.toString());
+      urlObject.password = val;
+      return new Url(urlObject);
+    },
+  },
+  setHost: {
+    value(val) {
+      const urlObject = new URL(this.toString());
+      urlObject.hostname = val;
+      return new Url(urlObject);
+    },
+  },
+  setPath: {
+    value(val) {
+      const urlObject = new URL(this.toString());
+      urlObject.pathname = val;
+      return new Url(urlObject);
+    },
+  },
+  setFragment: {
+    value(val) {
+      const urlObject = new URL(this.toString());
+      urlObject.hash = val;
+      return new Url(urlObject);
+    },
+  },
 });
 
 Url.fromString = (urlString) => {

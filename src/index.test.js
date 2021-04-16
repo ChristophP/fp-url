@@ -149,17 +149,21 @@ describe("Setters", () => {
     const url = Url.fromString("http://unsafe.com");
     expect(url.setProtocol("https")).toHaveProperty("protocol", "https");
   });
-  test("setUser() sets the protocol", () => {
-    expect(false).toBe(true);
+  test("setUser() sets the user", () => {
+    const url = Url.fromString("http://unsafe.com");
+    expect(url.setUser("assi")).toHaveProperty("user", "assi");
   });
-  test("setAuth() sets the protocol", () => {
-    expect(false).toBe(true);
+  test("setPassword() sets the password", () => {
+    const url = Url.fromString("http://assi@unsafe.com");
+    expect(url.setPassword("peter")).toHaveProperty("password", "peter");
   });
-  test("setHost() sets the protocol", () => {
-    expect(false).toBe(true);
+  test("setHost() sets the host", () => {
+    const url = Url.fromString("http://assi@unsafe.com");
+    expect(url.setHost("ard.de")).toHaveProperty("host", "ard.de");
   });
-  test("setPath() sets the protocol", () => {
-    expect(false).toBe(true);
+  test("setPath() sets the path", () => {
+    const url = Url.fromString("http://assi@unsafe.com");
+    expect(url.setPath("/assi/peter")).toHaveProperty("path", "/assi/peter");
   });
   test("setQueryParam() sets the protocol", () => {
     expect(false).toBe(true);
@@ -173,10 +177,11 @@ describe("Setters", () => {
   test("setQueryString() sets the protocol", () => {
     expect(false).toBe(true);
   });
-  test("setFragment() sets the protocol", () => {
-    expect(false).toBe(true);
-  });
-  test("setQueryParam() stringifies the url", () => {
-    expect(false).toBe(true);
+  test("setFragment() sets the fragment", () => {
+    const url = Url.fromString("http://assi@unsafe.com");
+    expect(url.setFragment("something-cool")).toHaveProperty(
+      "fragment",
+      "something-cool"
+    );
   });
 });
