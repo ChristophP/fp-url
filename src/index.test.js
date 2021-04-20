@@ -135,6 +135,31 @@ describe("Getters", () => {
     const url = Url.fromString("https://ard.de/some/path?foo=bar#fragment");
     expect(url.getUri()).toBe("/some/path?foo=bar#fragment");
   });
+
+  test("getQueryString() will return the entire query string", () => {
+    const url = Url.fromString("https://ard.de/some/path?foo=bar#fragment");
+    expect(url.getQueryString()).toBe("?foo=bar");
+  });
+  test("getQueryParam() will return the value for the param name if it exists", () => {
+    const url = Url.fromString("https://ard.de/some/path?foo=bar");
+    expect(url.getQueryParam("foo")).toBe("bar");
+  });
+  test("getQueryParam() will return null if it doesn't exists", () => {
+    const url = Url.fromString("https://ard.de/some/path?foo=bar");
+    expect(url.getQueryParam("assi")).toBeNull();
+  });
+  test("getQueryParamList() will return the a list of values for the param name", () => {
+    const url = Url.fromString("https://ard.de/some/path?foo=bar&foo=assi");
+    expect(url.getQueryParamList("foo")).toEqual(["bar", "assi"]);
+  });
+  test("getQueryPairs() returns a list of of key value pairs of the query string", () => {
+    const url = Url.fromString("https://ard.de/some/path?foo=bar&foo=assi&a=b");
+    expect(url.getQueryPairs()).toEqual([
+      ["foo", "bar"],
+      ["foo", "assi"],
+      ["a", "b"],
+    ]);
+  });
 });
 
 describe("interrogation", () => {
@@ -165,9 +190,59 @@ describe("Setters", () => {
     const url = Url.fromString("http://assi@unsafe.com");
     expect(url.setPath("/assi/peter")).toHaveProperty("path", "/assi/peter");
   });
-  test("setQueryParam() sets the protocol", () => {
-    expect(false).toBe(true);
+
+  describe("setQueryParam()", () => {
+    test("sets the query param when none is set", () => {
+      const url = Url.fromString("http://example.com").setQueryParam(
+        "foo",
+        "bar"
+      );
+      expect(url.getQueryString()).toEqual("?foo=bar");
+    });
+    test("overrides the query param when one is set", () => {
+      const url = Url.fromString("http://example.com?foo=assi").setQueryParam(
+        "foo",
+        "bar"
+      );
+      expect(url.toString()).toEqual("https://example.com?foo=bar");
+      expect(url.setPath("/assi/peter")).toHaveProperty("path", "/assi/peter");
+    });
+    test("unsets other query params with the same name", () => {
+      const url = Url.fromString("http://assi@unsafe.com");
+      expect(url.setPath("/assi/peter")).toHaveProperty("path", "/assi/peter");
+    });
   });
+
+  describe("setQueryString()", () => {
+    test("replaces the enitre query string", () => {
+      const url = Url.fromString("http://example.com?foo=bar").setQueryString(
+        "assi=peter&bar=stuff"
+      );
+      expect(url.getQueryString()).toEqual("assi=peter&bar=stuff");
+    });
+  });
+
+  describe("removeQueryParam()", () => {
+    test("removes a query param when it exists in the query string", () => {
+      const url = Url.fromString("http://example.com?foo=bar").removeQueryParam(
+        "foo"
+      );
+      expect(url.getQueryParam("foo")).toBeNull();
+    });
+    test("removes all instances of a param in the query string", () => {
+      const url = Url.fromString("http://example.com?foo=bar").setQueryString(
+        "assi=peter&bar=stuff"
+      );
+      expect(url.getQueryString()).toEqual("assi=peter&bar=stuff");
+    });
+    test("does nothing if the param name does not exist in the query", () => {
+      const url = Url.fromString("http://example.com?foo=bar").setQueryString(
+        "assi=peter&bar=stuff"
+      );
+      expect(url.getQueryString()).toEqual("assi=peter&bar=stuff");
+    });
+  });
+
   test("removeQueryParam() sets the protocol", () => {
     expect(false).toBe(true);
   });

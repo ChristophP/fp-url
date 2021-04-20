@@ -5,11 +5,7 @@ const Url = function (urlObject) {
     protocol: urlObject.protocol.slice(0, -1),
     host: urlObject.hostname,
     port: urlObject.port !== "" ? Number(urlObject.port) : null,
-    // host: "assi.peter", -- is hostname + port -- getter
-    // href: "https://ich:passwort@assi.peter/", -- getter
-    // origin: "https://assi.peter", -- is protocol + hostname + port
     path: urlObject.pathname,
-    // search: "",  -- stringifies search params -- getter
     query: urlObject.search !== "" ? urlObject.searchParams : null,
     fragment: urlObject.hash !== "" ? urlObject.hash.slice(1) : null,
 
@@ -116,6 +112,26 @@ Object.defineProperties(Url.prototype, {
       return `${this.path}?${this.query.toString()}#${this.fragment}`;
     },
   },
+  getQueryString: {
+    value() {
+      return `?${this.query.toString()}`;
+    },
+  },
+  getQueryParam: {
+    value(key) {
+      return this.query.get(key);
+    },
+  },
+  getQueryParamList: {
+    value(key) {
+      return this.query.getAll(key);
+    },
+  },
+  getQueryPairs: {
+    value() {
+      return Array.from(this.query.entries());
+    },
+  },
   // SETTERS
   setProtocol: {
     value(val) {
@@ -152,6 +168,8 @@ Object.defineProperties(Url.prototype, {
       return new Url(urlObject);
     },
   },
+  // setPathSegments: {},
+  // setPathSegment: {},
   setFragment: {
     value(val) {
       const urlObject = new URL(this.toString());
