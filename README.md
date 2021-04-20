@@ -24,6 +24,29 @@ npm install --save fp-url
 
 ## Sample usage
 
+## API
+
+### Creating a URL and checking its properties
+
+```js
+import Url from ('fp-url');
+
+const url = Url.fromString('https://ard.de:443/path?foo=bar#dialog');
+
+url.protocol // "https:"
+url.host // "ard.de"
+url.port // 443
+url.path // "/path"
+url.query // "foo=bar"
+url.fragment // "dialog"
+
+url.toString() // "https://ard.de:443/path?foo=bar#dialog"
+```
+
+### Using getters
+### Using setters
+### Fancy interrogation
+
 ## Features that nurl doesn't have
 - Setting the entire querystring
 - Support for nested url params
